@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2>Welcome to Attendant Care Portal!</h2>
+  <ion-list>
+    <button ion-item *ngFor="let item of items" (click)="openPage(item.page)" icon-left>
+      <ion-icon [name]="item.icon" [ngStyle]="{'color' : item.color}" item-left></ion-icon>
+      {{ item.title }}
+      <ion-icon name="arrow-forward" item-right></ion-icon>
+    </button>
+  </ion-list>
+</ion-content>

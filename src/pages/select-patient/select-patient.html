@@ -1,0 +1,24 @@
+<!--
+  Generated template for the SelectPatient page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Select Patient</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-searchbar></ion-searchbar>
+  <ion-list>
+    <button ion-item (click)="selectPatient()">Billy Bob</button>
+    <button ion-item (click)="selectPatient()">John Doe</button>
+    <button ion-item (click)="selectPatient()">Nancy Nurse</button>
+  </ion-list>
+  <button ion-button (click)="newPatient()">New Patient</button>
+</ion-content>
