@@ -4,6 +4,7 @@ import { NavController } from 'ionic-angular';
 
 import { InboxPage } from '../inbox/inbox';
 import { SchedulePage } from '../schedule/schedule';
+import { InformationPage } from '../information/information';
 import { SelectPatientPage } from '../select-patient/select-patient';
 
 @Component({
@@ -34,6 +35,9 @@ export class HomePage {
         break;
       case 'schedule':
         this.navCtrl.push(SchedulePage);
+        break;
+      case 'information':
+        this.navCtrl.push(InformationPage);
         break;
       case 'careplan':
         this.navCtrl.push(SelectPatientPage, {nextPage: 'careplan'});

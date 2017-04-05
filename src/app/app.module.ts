@@ -7,8 +7,9 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { InboxPage } from '../pages/inbox/inbox';
 import { SchedulePage } from '../pages/schedule/schedule';
-import {CareNotePage} from '../pages/care-note/care-note';
+import { InformationPage } from '../pages/information/information';
 import {CarePlanPage} from '../pages/care-plan/care-plan';
+import {CareNotePage} from '../pages/care-note/care-note';
 import {SelectPatientPage} from '../pages/select-patient/select-patient';
 import { MessagePage } from '../pages/message/message';
 
@@ -25,6 +26,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     InboxPage,
     MessagePage,
     SchedulePage,
+    InformationPage,
     CareNotePage,
     CarePlanPage,
     SelectPatientPage
@@ -42,6 +44,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     InboxPage,
     MessagePage,
     SchedulePage,
+    InformationPage,
     CareNotePage,
     CarePlanPage,
     SelectPatientPage
