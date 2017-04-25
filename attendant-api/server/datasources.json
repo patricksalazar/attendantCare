@@ -1,0 +1,16 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "attendant": {
+    "host": "localhost",
+    "port": 27017,
+    "url": "mongodb://localhost:27017/attendant",
+    "database": "attendant",
+    "password": "",
+    "name": "attendant",
+    "user": "",
+    "connector": "mongodb"
+  }
+}

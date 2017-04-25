@@ -1,0 +1,56 @@
+{
+  "name": "CarePlan",
+  "plural": "careplan",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "startDate": {
+      "type": "date"
+    },
+    "endDate": {
+      "type": "date"
+    },
+    "discipline": {
+      "type": "string",
+      "required": true
+    },
+    "createdBy": {
+      "type": "string",
+      "required": true
+    },
+    "createDate": {
+      "type": "date",
+      "required": true
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": true
+    },
+    "updateDate": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "patient": {
+      "type": "belongsTo",
+      "model": "Patient",
+      "foreignKey": ""
+    },
+    "tasks": {
+      "type": "hasMany",
+      "model": "CarePlanTask",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

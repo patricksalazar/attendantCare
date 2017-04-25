@@ -1,0 +1,34 @@
+{
+  "name": "Phone",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "number": {
+      "type": "number",
+      "required": true
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "extension": {
+      "type": "number"
+    },
+    "carrier": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "patient": {
+      "type": "belongsTo",
+      "model": "Patient",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

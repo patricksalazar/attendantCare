@@ -1,0 +1,35 @@
+{
+  "name": "Company",
+  "plural": "companies",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "fullAddress": {
+      "type": "string"
+    },
+    "ein": {
+      "type": "number"
+    },
+    "phone": {
+      "type": "number"
+    },
+    "fax": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

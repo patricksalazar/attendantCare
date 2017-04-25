@@ -1,0 +1,58 @@
+{
+  "name": "Patient",
+  "plural": "patients",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "fullAddress": {
+      "type": "string"
+    },
+    "geoloc": {
+      "type": "geopoint"
+    },
+    "admitDate": {
+      "type": "date"
+    },
+    "birthDate": {
+      "type": "date"
+    },
+    "priority": {
+      "type": "number"
+    },
+    "memberId": {
+      "type": "string"
+    },
+    "groupId": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "phones": {
+      "type": "hasMany",
+      "model": "Phone",
+      "foreignKey": ""
+    },
+    "contacts": {
+      "type": "hasMany",
+      "model": "Contact",
+      "foreignKey": ""
+    },
+    "carePlans": {
+      "type": "hasMany",
+      "model": "CarePlan",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

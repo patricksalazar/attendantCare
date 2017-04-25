@@ -1,0 +1,37 @@
+{
+  "name": "Dropdown",
+  "plural": "dropdown",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "selector": {
+      "type": "string",
+      "required": true
+    },
+    "group": {
+      "type": "string"
+    },
+    "groupSequence": {
+      "type": "number"
+    },
+    "sequence": {
+      "type": "number",
+      "required": true
+    },
+    "code": {
+      "type": "number",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

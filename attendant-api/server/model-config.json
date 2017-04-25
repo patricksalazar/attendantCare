@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "db"
+  },
+  "AccessToken": {
+    "dataSource": "db",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Patient": {
+    "dataSource": "attendant",
+    "public": true
+  },
+  "Company": {
+    "dataSource": "attendant",
+    "public": true
+  },
+  "Contact": {
+    "dataSource": "attendant",
+    "public": true
+  },
+  "Phone": {
+    "dataSource": "attendant",
+    "public": false
+  },
+  "CarePlan": {
+    "dataSource": "attendant",
+    "public": true
+  },
+  "CarePlanTask": {
+    "dataSource": "attendant",
+    "public": false
+  },
+  "Dropdown": {
+    "dataSource": "attendant",
+    "public": true
+  }
+}

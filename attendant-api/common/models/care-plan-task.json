@@ -1,0 +1,40 @@
+{
+  "name": "CarePlanTask",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "group": {
+      "type": "string",
+      "required": true
+    },
+    "groupSequence": {
+      "type": "number",
+      "required": true
+    },
+    "sequence": {
+      "type": "number",
+      "required": true
+    },
+    "taskId": {
+      "type": "string",
+      "required": true
+    },
+    "taskDescription": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "careplan": {
+      "type": "belongsTo",
+      "model": "CarePlan",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

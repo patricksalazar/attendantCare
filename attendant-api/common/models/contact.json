@@ -1,0 +1,44 @@
+{
+  "name": "Contact",
+  "plural": "contacts",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "specialty": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "isEmergencyContact": {
+      "type": "boolean"
+    },
+    "isPowerOfAttorney": {
+      "type": "boolean"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "patient": {
+      "type": "belongsTo",
+      "model": "Patient",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
