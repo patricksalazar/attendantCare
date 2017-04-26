@@ -274,154 +274,179 @@ module.exports = function(app) {
         let CarePlanTask = app.models.CarePlanTask;
         CarePlanTask.create([{
           group: 'Bathing',
+          groupSequence: 1,
           sequence: 1.1,
           taskId: 101,
-          description: 'Total assist with bathing',
-          careplanId: careplan[0].id
+          taskDescription: 'Total assist with bathing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Bathing',
+          groupSequence: 1,
           sequence: 1.2,
           taskId: 102,
-          description: 'Assist with bathing',
-          careplanId: careplan[0].id
+          taskDescription: 'Assist with bathing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Upper',
+          groupSequence: 2,
           sequence: 2.1,
           taskId: 121,
-          description: 'Total assist with upper dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Total assist with upper dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Upper',
+          groupSequence: 2,
           sequence: 2.2,
           taskId: 122,
-          description: 'Assist with upper dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Assist with upper dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Lower',
+          groupSequence: 3,
           sequence: 3.2,
           taskId: 132,
-          description: 'Assist with lower dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Assist with lower dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Lower',
+          groupSequence: 3,
           sequence: 3.3,
           taskId: 133,
-          description: 'Partial assist with lower dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Partial assist with lower dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Ambulation',
+          groupSequence: 4,
           sequence: 4.3,
           taskId: 143,
-          description: 'Use wheelchair and help maneuver',
-          careplanId: careplan[0].id
+          taskDescription: 'Use wheelchair and help maneuver',
+          carePlanId: careplan[0].id
         }, {
           group: 'Ambulation',
+          groupSequence: 4,
           sequence: 4.4,
           taskId: 144,
-          description: 'Perform pressure release',
-          careplanId: careplan[0].id
+          taskDescription: 'Perform pressure release',
+          carePlanId: careplan[0].id
         }, {
           group: 'Bathing',
+          groupSequence: 1,
           sequence: 1.2,
           taskId: 102,
-          description: 'Assist with bathing',
-          careplanId: careplan[1].id
+          taskDescription: 'Assist with bathing',
+          carePlanId: careplan[1].id
         }, {
           group: 'Bathing',
+          groupSequence: 1,
           sequence: 1.3,
           taskId: 103,
-          description: 'Partial assist with bathing',
-          careplanId: careplan[1].id
+          taskDescription: 'Partial assist with bathing',
+          carePlanId: careplan[1].id
         }, {
           group: 'Dressing - Upper',
+          groupSequence: 2,
           sequence: 2.2,
           taskId: 122,
-          description: 'Assist with upper dressing',
-          careplanId: careplan[1].id
+          taskDescription: 'Assist with upper dressing',
+          carePlanId: careplan[1].id
         }, {
           group: 'Dressing - Upper',
+          groupSequence: 2,
           sequence: 2.3,
           taskId: 123,
-          description: 'Partial assist with upper dressing',
-          careplanId: careplan[1].id
+          taskDescription: 'Partial assist with upper dressing',
+          carePlanId: careplan[1].id
         }, {
           group: 'Dressing - Lower',
+          groupSequence: 3,
           sequence: 3.3,
           taskId: 133,
-          description: 'Partial assist with lower dressing',
-          careplanId: careplan[1].id
+          taskDescription: 'Partial assist with lower dressing',
+          carePlanId: careplan[1].id
         }, {
           group: 'Dressing - Lower',
+          groupSequence: 3,
           sequence: 3.4,
           taskId: 134,
-          description: 'Standby assist with lower dressing',
-          careplanId: careplan[1].id
+          taskDescription: 'Standby assist with lower dressing',
+          carePlanId: careplan[1].id
         }, {
           group: 'Ambulation',
+          groupSequence: 4,
           sequence: 4.2,
           taskId: 142,
-          description: 'Use wheelchair and independent',
-          careplanId: careplan[1].id
+          taskDescription: 'Use wheelchair and independent',
+          carePlanId: careplan[1].id
         }, {
           group: 'Ambulation',
+          groupSequence: 4,
           sequence: 4.3,
           taskId: 143,
-          description: 'Use wheelchair and help maneuver',
-          careplanId: careplan[1].id
+          taskDescription: 'Use wheelchair and help maneuver',
+          carePlanId: careplan[1].id
         }, {
           group: 'Bathing',
+          groupSequence: 1,
           sequence: 1.4,
           taskId: 104,
-          description: 'Standby assist with bathing',
-          careplanId: careplan[0].id
+          taskDescription: 'Standby assist with bathing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Bathing',
+          groupSequence: 1,
           sequence: 1.5,
           taskId: 105,
-          description: 'Independent with bathing',
-          careplanId: careplan[0].id
+          taskDescription: 'Independent with bathing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Upper',
+          groupSequence: 2,
           sequence: 2.3,
           taskId: 123,
-          description: 'Partial assist with upper dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Partial assist with upper dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Upper',
+          groupSequence: 2,
           sequence: 2.4,
           taskId: 124,
-          description: 'Standby assist with upper dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Standby assist with upper dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Upper',
+          groupSequence: 2,
           sequence: 2.5,
           taskId: 125,
-          description: 'Independent with upper dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Independent with upper dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Lower',
+          groupSequence: 3,
           sequence: 3.4,
           taskId: 134,
-          description: 'Standby assist with lower dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Standby assist with lower dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Dressing - Lower',
+          groupSequence: 3,
           sequence: 3.5,
           taskId: 135,
-          description: 'Independent with lower dressing',
-          careplanId: careplan[0].id
+          taskDescription: 'Independent with lower dressing',
+          carePlanId: careplan[0].id
         }, {
           group: 'Ambulation',
+          groupSequence: 4,
           sequence: 4.1,
           taskId: 141,
-          description: 'Independent in walking',
-          careplanId: careplan[0].id
+          taskDescription: 'Independent in walking',
+          carePlanId: careplan[0].id
         }, {
           group: 'Ambulation',
+          groupSequence: 4,
           sequence: 4.4,
           taskId: 144,
-          description: 'Perform pressure release',
-          careplanId: careplan[0].id
+          taskDescription: 'Perform pressure release',
+          carePlanId: careplan[0].id
         }], cb);
       });
   }

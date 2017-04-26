@@ -1,0 +1,28 @@
+<!--
+  Generated template for the Patients page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Patients</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
+  <ion-list>
+    <button type="button" ion-item *ngFor="let patient of patients" (click)="selectPatient(patient.id)">
+      <h2>{{ patient.firstName }} {{ patient.lastName }}</h2>
+      <ion-icon name="arrow-forward" item-right></ion-icon>
+    </button>
+    <button ion-item (click)="selectPatient()">Billy Bob</button>
+    <button ion-item (click)="selectPatient()">John Doe</button>
+    <button ion-item (click)="selectPatient()">Nancy Nurse</button>
+  </ion-list>
+  <button ion-button (click)="newPatient()">New Patient</button>
+</ion-content>

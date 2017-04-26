@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { InboxPage } from '../inbox/inbox';
 import { SchedulePage } from '../schedule/schedule';
 import { InformationPage } from '../information/information';
 import { SelectPatientPage } from '../select-patient/select-patient';
 
+@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -18,6 +19,7 @@ export class HomePage {
       this.items = [
         { title: 'Inbox', icon: 'mail', page: 'inbox' },
         { title: 'Schedule', icon: 'calendar', page: 'schedule' },
+        { title: 'Patients', icon: 'contact', page: 'patient' },
         { title: 'Information', icon: 'information-circle', page: 'information' },
         { title: 'Care Plan', icon: 'medkit', page: 'careplan' },
         { title: 'Medications', icon: 'flask', page: 'medications' },
@@ -35,6 +37,9 @@ export class HomePage {
         break;
       case 'schedule':
         this.navCtrl.push(SchedulePage);
+        break;
+      case 'patient':
+        this.navCtrl.push("Patients");
         break;
       case 'information':
         this.navCtrl.push(InformationPage);

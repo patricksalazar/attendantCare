@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node .",
-    "posttest": "npm run lint && nsp check"
+    "posttest": "npm run lint && nsp check",
+    "build:sdk": "./node_modules/.bin/lb-sdk server/server ../attendant-app/src/app/shared/sdk -d ng2web"
   },
   "dependencies": {
     "compression": "^1.0.3",

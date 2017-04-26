@@ -47,7 +47,7 @@
       "model": "Contact",
       "foreignKey": ""
     },
-    "carePlans": {
+    "careplans": {
       "type": "hasMany",
       "model": "CarePlan",
       "foreignKey": ""
