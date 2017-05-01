@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 // import { lbServices } from './lb-services';
-import { Patient } from '../models/models';
+import { IPatient, ICarePlan } from '../models/models';
 
 /*
   Generated class for the PatientService provider.
@@ -26,16 +26,12 @@ export class PatientService {
     //  'Authorization': this.authService.getToken(),
    });
 
-  // Load all Patients
-  load(): Observable<Patient[]> {
-    let query = { limit: 10 }
-    const filter = encodeURI(JSON.stringify(query));
-    return this.http.get(`${this.baseUrl}/patients?filter=${filter}`).map(res => <Patient[]>res.json());
-  }
-
   // Search for Patients
-  search(queryParam: string): Observable<Patient[]> {
+  search(queryParam: string): Observable<IPatient[]> {
     let query = {
+      fields: {
+        id: true, firstName: true, lastName: true
+      },
       where: {
         or: [
           {firstName: {like: queryParam, options: "i"}},
@@ -46,7 +42,46 @@ export class PatientService {
     };
 
     let filter = encodeURI(JSON.stringify(query));
-    return this.http.get(`${this.baseUrl}/patients?filter=${filter}`).map(res => <Patient[]>res.json());
+    return this.http.get(`${this.baseUrl}/patients?filter=${filter}`).map(res => <IPatient[]>res.json());
+  }
+
+  // Load all Patients
+  findAll(): Observable<IPatient[]> {
+    let query = { limit: 10 }
+    const filter = encodeURI(JSON.stringify(query));
+    return this.http.get(`${this.baseUrl}/patients?filter=${filter}`).map(res => <IPatient[]>res.json());
+  }
+
+  // Get Patient by id
+  findById(patientId: string): Observable<IPatient> {
+    console.debug("PatientService.findById id:"+patientId);
+    let query = { include: ['phones', 'contacts'] }
+    const filter = encodeURI(JSON.stringify(query));
+    return this.http.get(`${this.baseUrl}/patients/${patientId}?filter=${filter}`).map(res => <IPatient>res.json());
+  }
+
+  getCarePlan(patientId: string): Observable<ICarePlan> {
+    console.debug("PatientService.getCarePlan id:"+patientId);
+    let query = {
+      include: {
+        relation: 'groups',
+        scope: {
+          order: 'sequence ASC',
+          include: {
+            relation: 'tasks',
+            scope: {
+              order: 'sequence ASC'
+            }
+          }
+        }
+      },
+      limit: 1
+    }
+    const filter = encodeURI(JSON.stringify(query));
+    return this.http.get(`${this.baseUrl}/patients/${patientId}/careplans?filter=${filter}`).map(res => {
+      let val = <ICarePlan[]>res.json();
+      return val[0];
+    });
   }
 
 }

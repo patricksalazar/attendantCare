@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import {getDaysofWeek} from '../../utils/dateUtils';
 
@@ -11,6 +11,7 @@ import {CareNotePage} from '../care-note/care-note';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+@IonicPage()
 @Component({
   selector: 'page-schedule',
   templateUrl: 'schedule.html'

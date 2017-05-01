@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { CarePlanPage } from '../care-plan/care-plan';
-
 /*
   Generated class for the SelectPatient page.
 
@@ -28,7 +26,7 @@ export class SelectPatientPage {
     console.log("called selectPatient");
     switch(this.nextPage) {
       case 'careplan':
-        this.navCtrl.push(CarePlanPage);
+        this.navCtrl.push("CarePlan");
         break;
     }
   }

@@ -1,0 +1,125 @@
+<ion-content no-padding>
+  <ion-list *ngIf="!isLoaded; else displayPatient">
+    <ion-list-header>Loading patient...</ion-list-header>
+  </ion-list>
+  <ng-template #displayPatient>
+    <form [formGroup]="patientForm">
+      <ion-list>
+        <ion-item>
+          <ion-label color="primary" fixed>First Name</ion-label>
+          <ion-input type="text" formControlName="firstName" [class.invalid]="!patientForm.controls.firstName.valid &amp;&amp; patientForm.controls.firstName.dirty"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!patientForm.controls.firstName.valid &amp;&amp; patientForm.controls.firstName.dirty">
+          <p danger>*Please enter a valid name.</p>
+        </ion-item>
+        <ion-item>
+          <ion-label color="primary" fixed>Last Name</ion-label>
+          <ion-input type="text" formControlName="lastName" [class.invalid]="!patientForm.controls.lastName.valid &amp;&amp; (patientForm.controls.lastName.dirty)"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!patientForm.controls.lastName.valid &amp;&amp; patientForm.controls.lastName.dirty">
+          <p danger>*Please enter a valid name.</p>
+        </ion-item>
+        <ion-item>
+          <ion-label color="primary" fixed>Address</ion-label>
+          <ion-textarea rows="3" formControlName="fullAddress" [class.invalid]="!patientForm.controls.fullAddress.valid &amp;&amp; patientForm.controls.fullAddress.dirty"></ion-textarea>
+        </ion-item>
+        <ion-item *ngIf="!patientForm.controls.fullAddress.valid &amp;&amp; patientForm.controls.fullAddress.dirty">
+          <p danger>*Please enter a valid address.</p>
+        </ion-item>
+        <ion-item>
+          <ion-label color="primary" fixed>Email</ion-label>
+          <ion-input type="email" formControlName="email" [class.invalid]="!patientForm.controls.email.valid &amp;&amp; patientForm.controls.email.dirty"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!patientForm.controls.email.valid &amp;&amp; patientForm.controls.email.dirty">
+          <p danger>*Please enter a valid email.</p>
+        </ion-item>
+        <ion-item>
+          <ion-label color="primary" fixed>Admit Date</ion-label>
+          <ion-datetime displayFormat="MMM DD YYYY" pickerFormat="MMM DD YYYY" formControlName="admitDate" [class.invalid]="!patientForm.controls.admitDate.valid &amp;&amp; patientForm.controls.admitDate.dirty"></ion-datetime>
+        </ion-item>
+        <ion-item *ngIf="!patientForm.controls.admitDate.valid &amp;&amp; patientForm.controls.admitDate.dirty">
+          <p danger>*Please enter a valid Admit date.</p>
+        </ion-item>
+        <ion-item>
+          <ion-label color="primary" fixed>Birth Date</ion-label>
+          <ion-datetime displayFormat="MMM DD YYYY" pickerFormat="MMM DD YYYY" formControlName="birthDate" [class.invalid]="!patientForm.controls.birthDate.valid &amp;&amp; patientForm.controls.birthDate.dirty"></ion-datetime>
+        </ion-item>
+        <ion-item *ngIf="!patientForm.controls.birthDate.valid &amp;&amp; (patientForm.controls.birthDate.dirty)">
+          <p danger>*Please enter a valid birth date.</p>
+        </ion-item>
+        <ion-item>
+          <ion-label color="primary" fixed>Group ID</ion-label>
+          <ion-input type="text" formControlName="groupId"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="primary" fixed>Member ID</ion-label>
+          <ion-input type="text" formControlName="memberId"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="primary" fixed>Type</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-list formArrayName="phones">
+        <ion-list-header color="primary">
+          Phones
+          <button ion-button icon-only item-right clear><ion-icon name="add" color="secondary"></ion-icon></button>
+        </ion-list-header>
+        <div *ngFor="let phone of patientForm.controls.phones.controls; let i = index">
+          <ion-item [formGroupName]="i" *ngIf="phone.number">
+            <ion-input type="text"  formControlName="type" placeholder="Name" readonly></ion-input>
+            <ion-input type="tel" formControlName="number" placeholder="Number" readonly></ion-input>
+            <button ion-button icon-only item-right clear>
+              <ion-icon name="call" color="secondary"></ion-icon>
+            </button>
+          </ion-item>
+        </div>
+      </ion-list>
+      <ion-list formArrayName="personalContacts">
+        <ion-list-header color="primary">
+          Personal Contacts
+          <button ion-button icon-only item-right clear><ion-icon name="add" color="secondary"></ion-icon></button>
+        </ion-list-header>
+        <div *ngFor="let contact of patientForm.controls.personalContacts.controls; let i = index">
+          <ion-item [formGroupName]="i" *ngIf="contact.firstName">
+            <ion-input type="text"  formControlName="firstName" placeholder="Name" readonly></ion-input>
+            <ion-input type="tel" formControlName="specialty" placeholder="Relation" readonly></ion-input>
+            <button ion-button icon-only item-right clear>
+              <ion-icon name="call" color="secondary"></ion-icon>
+            </button>
+          </ion-item>
+        </div>
+      </ion-list>
+      <ion-list formArrayName="physicians">
+        <ion-list-header color="primary">
+          Physicians
+          <button ion-button icon-only item-right clear><ion-icon name="add" color="secondary"></ion-icon></button>
+        </ion-list-header>
+        <div *ngFor="let physician of patientForm.controls.physicians.controls; let i = index">
+          <ion-item [formGroupName]="i" *ngIf="physician.firstName">
+            <ion-input type="text"  formControlName="firstName" placeholder="Name" readonly></ion-input>
+            <ion-input type="tel" formControlName="specialty" placeholder="Specialty" readonly></ion-input>
+            <button ion-button icon-only item-right clear>
+              <ion-icon name="call" color="secondary"></ion-icon>
+            </button>
+          </ion-item>
+        </div>
+      </ion-list>
+      <ion-list formArrayName="otherContacts">
+        <ion-list-header color="primary">
+          Other Contacts
+          <button ion-button icon-only item-right clear><ion-icon name="add" color="secondary"></ion-icon></button>
+        </ion-list-header>
+        <div *ngFor="let contact of patientForm.controls.otherContacts.controls; let i = index">
+          <ion-item [formGroupName]="i" *ngIf="contact.firstName">
+            <ion-input type="text"  formControlName="firstName" placeholder="Name" readonly></ion-input>
+            <ion-input type="tel" formControlName="type" placeholder="Title" readonly></ion-input>
+            <button ion-button icon-only item-right clear>
+              <ion-icon name="call" color="secondary"></ion-icon>
+            </button>
+          </ion-item>
+        </div>
+      </ion-list>
+      <button ion-button full color="primary" (click)="save()">Save Patient</button>
+    </form>
+  </ng-template>
+</ion-content>

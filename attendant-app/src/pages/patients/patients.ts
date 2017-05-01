@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Patient } from '../../models/models';
+import { IPatient } from '../../models/models';
 import { PatientService } from '../../providers/patient-service';
 
 /**
@@ -15,11 +15,11 @@ import { PatientService } from '../../providers/patient-service';
   selector: 'page-patients',
   templateUrl: 'patients.html',
 })
-export class Patients {
-  patients: Patient[];
+export class PatientsPage {
+  patients: IPatient[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private patientService: PatientService) {
-    patientService.load().subscribe(patients => {
+    patientService.findAll().subscribe(patients => {
       this.patients = patients;
       console.log("Patients: "+JSON.stringify(patients));
     })
@@ -29,8 +29,9 @@ export class Patients {
     console.log('ionViewDidLoad Patients');
   }
 
-  selectPatient() {
-    console.log("called selectPatient");
+  selectPatient(patientId: string) {
+    console.log("called selectPatient: " + patientId);
+    this.navCtrl.push('PatientMenu', { patientId });
   }
 
   search(ev: any) {

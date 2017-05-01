@@ -1,6 +1,6 @@
 {
   "name": "CarePlan",
-  "plural": "careplan",
+  "plural": "careplans",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -45,9 +45,9 @@
       "model": "Patient",
       "foreignKey": ""
     },
-    "tasks": {
+    "groups": {
       "type": "hasMany",
-      "model": "CarePlanTask",
+      "model": "CarePlanGroup",
       "foreignKey": ""
     }
   },

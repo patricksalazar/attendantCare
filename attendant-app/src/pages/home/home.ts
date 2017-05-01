@@ -17,37 +17,19 @@ export class HomePage {
 
   constructor(public navCtrl: NavController) {
       this.items = [
-        { title: 'Inbox', icon: 'mail', page: 'inbox' },
-        { title: 'Schedule', icon: 'calendar', page: 'schedule' },
-        { title: 'Patients', icon: 'contact', page: 'patient' },
-        { title: 'Information', icon: 'information-circle', page: 'information' },
-        { title: 'Care Plan', icon: 'medkit', page: 'careplan' },
-        { title: 'Medications', icon: 'flask', page: 'medications' },
-        { title: 'Vitals', icon: 'thermometer', page: 'vitals' },
-        { title: 'Finances', icon: 'cash', page: 'finances' },
-        { title: 'Reports', icon: 'stats', page: 'reports' },
-        { title: 'Help', icon: 'help-circle', page: 'help' },
+        { title: 'Inbox', icon: 'mail', page: 'InboxPage' },
+        { title: 'Schedule', icon: 'calendar', page: 'SchedulePage' },
+        { title: 'Patients', icon: 'contact', page: 'PatientsPage' },
+        { title: 'Medications', icon: 'flask', page: 'Medications' },
+        { title: 'Vitals', icon: 'thermometer', page: 'Vitals' },
+        { title: 'Finances', icon: 'cash', page: 'Finances' },
+        { title: 'Reports', icon: 'stats', page: 'Reports' },
+        { title: 'Help', icon: 'help-circle', page: 'Help' },
       ];
   }
 
   openPage(page) {
-    switch(page) {
-      case 'inbox':
-        this.navCtrl.push(InboxPage);
-        break;
-      case 'schedule':
-        this.navCtrl.push(SchedulePage);
-        break;
-      case 'patient':
-        this.navCtrl.push("Patients");
-        break;
-      case 'information':
-        this.navCtrl.push(InformationPage);
-        break;
-      case 'careplan':
-        this.navCtrl.push(SelectPatientPage, {nextPage: 'careplan'});
-        break;
-    }
+    this.navCtrl.push(page);
   }
 
 }

@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Patient Details</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-tabs tabsPlacement="top" tabsLayout="icon-top">
+    <ion-tab [root]="tab1Root" [rootParams]="tabParams" tabTitle="Info" tabIcon="information-circle"></ion-tab>
+    <ion-tab [root]="tab2Root" [rootParams]="tabParams" tabTitle="Care Plan" tabIcon="information-circle"></ion-tab>
+  </ion-tabs>
+</ion-content>

@@ -57,10 +57,14 @@
   },
   "CarePlanTask": {
     "dataSource": "attendant",
-    "public": true
+    "public": false
   },
   "Dropdown": {
     "dataSource": "attendant",
     "public": true
+  },
+  "CarePlanGroup": {
+    "dataSource": "attendant",
+    "public": false
   }
 }
