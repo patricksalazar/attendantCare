@@ -84,4 +84,24 @@ export class PatientService {
     });
   }
 
+  create(patient: IPatient) {
+    console.debug("PatientService.create");
+    return this.http.post(`${this.baseUrl}/patients/`, patient)
+      .map(response => {
+        console.log("Create success response="+JSON.stringify(response));
+        return response;
+      })
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  update(patientId: string, patient: IPatient) {
+    console.debug("PatientService.create");
+    return this.http.put(`${this.baseUrl}/patients/${patientId}`, patient)
+      .map(response => {
+        console.log("Create success response="+JSON.stringify(response));
+        return response;
+      })
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
 }

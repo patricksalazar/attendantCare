@@ -18,7 +18,6 @@ module.exports = function(app) {
       if (err) throw err;
       createCarePlanGroups(results.careplan, function(err, results) {
         if (err) throw err;
-        console.log("results:" + JSON.stringify(results));
         createCarePlanTasks(results, function(err) {
           console.log('> models created successfully.');
         });

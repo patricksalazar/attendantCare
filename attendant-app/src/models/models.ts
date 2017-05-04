@@ -1,6 +1,7 @@
 // Phone model
 export interface IPhone {
   id: string,
+  patientId: string,
   number: number,
   type: string,
   extension: number,
@@ -9,6 +10,7 @@ export interface IPhone {
 
 class Phone implements IPhone {
   id: string;
+  patientId: string;
   number: number;
   type: string;
   extension: number;
@@ -18,20 +20,26 @@ class Phone implements IPhone {
 // Contact model
 export interface IContact {
   id: string,
+  patientId: string,
   firstName: string,
   lastName: string,
   type: string,
   specialty: string,
-  email: string
+  phone: number,
+  email: string,
+  isEmergencyContact: boolean
 }
 
 class Contact implements IContact {
   id: string;
+  patientId: string;
   firstName: string;
   lastName: string;
   type: string;
   specialty: string;
+  phone: number;
   email: string;
+  isEmergencyContact: boolean;
 }
 
 // Patient model

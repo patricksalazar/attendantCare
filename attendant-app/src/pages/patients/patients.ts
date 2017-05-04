@@ -21,17 +21,15 @@ export class PatientsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private patientService: PatientService) {
     patientService.findAll().subscribe(patients => {
       this.patients = patients;
-      console.log("Patients: "+JSON.stringify(patients));
     })
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad Patients');
+  selectPatient(patientId: string) {
+    this.navCtrl.push('PatientMenu', { patientId });
   }
 
-  selectPatient(patientId: string) {
-    console.log("called selectPatient: " + patientId);
-    this.navCtrl.push('PatientMenu', { patientId });
+  newPatient() {
+    this.navCtrl.push('PatientMenu');
   }
 
   search(ev: any) {

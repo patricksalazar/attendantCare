@@ -2,11 +2,6 @@ import { Component } from '@angular/core';
 
 import { IonicPage, NavController } from 'ionic-angular';
 
-import { InboxPage } from '../inbox/inbox';
-import { SchedulePage } from '../schedule/schedule';
-import { InformationPage } from '../information/information';
-import { SelectPatientPage } from '../select-patient/select-patient';
-
 @IonicPage()
 @Component({
   selector: 'page-home',
@@ -14,6 +9,7 @@ import { SelectPatientPage } from '../select-patient/select-patient';
 })
 export class HomePage {
   items = [];
+  title: string = "Care Coordinator";
 
   constructor(public navCtrl: NavController) {
       this.items = [
@@ -30,6 +26,10 @@ export class HomePage {
 
   openPage(page) {
     this.navCtrl.push(page);
+  }
+
+  changeTitle(title) {
+    this.title = title;
   }
 
 }

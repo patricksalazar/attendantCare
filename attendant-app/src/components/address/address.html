@@ -1,0 +1,11 @@
+<div [formGroup]="addressGroup">
+  <div class="form-group col-xs-6">
+    <ion-label>Street</ion-label>
+    <ion-input type="text" formControlName="street"></ion-input>
+    <error-messages control="addressGroup.controls.street"></error-messages>
+  </div>
+  <div class="form-group col-xs-6">
+    <label>Postal Code</label>
+    <ion-input type="text" formControlName="postal"></ion-input>
+  </div>
+</div>

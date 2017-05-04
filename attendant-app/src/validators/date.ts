@@ -7,8 +7,9 @@ export class DateValidator {
     }
 
     let now = new Date();
-    if (control.value > now) {
-      return { "Date cannot be in the future": true };
+    let d = new Date(control.value);
+    if (d > now) {
+      return { "futureDate": true };
     }
   }
 }
