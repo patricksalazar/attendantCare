@@ -66,5 +66,13 @@
   "CarePlanGroup": {
     "dataSource": "attendant",
     "public": false
+  },
+  "Schedule": {
+    "dataSource": "attendant",
+    "public": true
+  },
+  "ScheduleParticipant": {
+    "dataSource": "attendant",
+    "public": false
   }
 }

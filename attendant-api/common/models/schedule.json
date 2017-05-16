@@ -1,0 +1,50 @@
+{
+  "name": "Schedule",
+  "plural": "schedules",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "endDate": {
+      "type": "date",
+      "required": true
+    },
+    "status": {
+      "type": "string",
+      "required": true
+    },
+    "service": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "patient": {
+      "type": "belongsTo",
+      "model": "Patient",
+      "foreignKey": ""
+    },
+    "participants": {
+      "type": "hasMany",
+      "model": "Contact",
+      "foreignKey": "",
+      "through": "ScheduleParticipant"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

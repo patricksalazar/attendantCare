@@ -12,14 +12,18 @@ module.exports = function(app) {
     console.log("created patients and companies");
     async.parallel({
       contacts: async.apply(createContacts, results.patients),
+      schedule: async.apply(createSchedules, results.patients),
       phones: async.apply(createPhones, results.patients),
       careplan: async.apply(createCarePlan, results.patients)
     }, function(err, results) {
       if (err) throw err;
-      createCarePlanGroups(results.careplan, function(err, results) {
+      async.parallel({
+        groups: async.apply(createCarePlanGroups, results.careplan),
+        participants: async.apply(createScheduleParticipants, results.contacts),
+      }, function (err, results) {
         if (err) throw err;
-        createCarePlanTasks(results, function(err) {
-          console.log('> models created successfully.');
+          createCarePlanTasks(results, function(err) {
+            console.log('> models created successfully.');
         });
       });
     });
@@ -548,5 +552,128 @@ module.exports = function(app) {
         carePlanGroupId: groups[11].id
       }], cb);
     });
+  }
+
+  function createSchedules(patients, cb) {
+    attDS.automigrate('Schedule', function(err) {
+        if (err) return cb(err);
+        let Schedule = app.models.Schedule;
+        let today = new Date();
+        today.setMinutes(0);today.setSeconds(0);
+
+        let day1Start = new Date();
+        date1Start.setTime(today.getTime());
+        date1Start.setHours(8);
+        let date1End = new Date();
+        date1End.setTime(today.getTime());
+        date1End.setHours(16);
+        let date2Start = new Date();
+        date2Start.setTime(today.getTime());
+        date2Start.setHours(11);
+        let date2End = new Date();
+        date2End.setTime(today.getTime());
+        date2End.setHours(12);
+        let day3Start = new Date();
+        date3Start.setTime(today.getTime());
+        date3Start.setHours(8);
+        let date3End = new Date();
+        date3End.setTime(today.getTime());
+        date3End.setHours(16);
+        let date4Start = new Date();
+        date4Start.setTime(today.getTime());
+        date4Start.setHours(13);
+        let date4End = new Date();
+        date4End.setTime(today.getTime());
+        date4End.setHours(14);
+
+        Schedule.create([{
+          type: 'homecare',
+          startDate: date1Start,
+          endDate: date1End,
+          status: 'S',
+          service: 'HHA Hourly',
+          message: 'Test'
+          patientId: patients[0].id
+        }, {
+          type: 'physician',
+          startDate: date2Start,
+          endDate: date2End,
+          status: 'S',
+          service: 'DR Visit'
+          patientId: patients[0].id
+        }, {
+          type: 'homecare',
+          startDate: date3Start,
+          endDate: date3End,
+          status: 'S',
+          service: 'HHA Hourly'
+          patientId: patients[0].id
+        }, {
+          type: 'therapy',
+          startDate: date4Start,
+          endDate: date4End,
+          status: 'S',
+          service: 'PT Visit'
+          patientId: patients[0].id
+        }, {
+          type: 'homecare',
+          startDate: date1Start,
+          endDate: date1End,
+          status: 'S',
+          service: 'HHA Hourly',
+          message: 'Test'
+          patientId: patients[1].id
+        }, {
+          type: 'physician',
+          startDate: date2Start,
+          endDate: date2End,
+          status: 'S',
+          service: 'DR Visit'
+          patientId: patients[1].id
+        }, {
+          type: 'homecare',
+          startDate: date3Start,
+          endDate: date3End,
+          status: 'S',
+          service: 'HHA Hourly'
+          patientId: patients[1].id
+        }, {
+          type: 'therapy',
+          startDate: date4Start,
+          endDate: date4End,
+          status: 'S',
+          service: 'PT Visit'
+          patientId: patients[1].id
+        }, {
+          type: 'homecare',
+          startDate: date1Start,
+          endDate: date1End,
+          status: 'S',
+          service: 'HHA Hourly',
+          message: 'Test'
+          patientId: patients[2].id
+        }, {
+          type: 'physician',
+          startDate: date2Start,
+          endDate: date2End,
+          status: 'S',
+          service: 'PT Visit'
+          patientId: patients[2].id
+        }, {
+          type: 'homecare',
+          startDate: date3Start,
+          endDate: date3End,
+          status: 'S',
+          service: 'HHA Hourly'
+          patientId: patients[2].id
+        }, {
+          type: 'therapy',
+          startDate: date4Start,
+          endDate: date4End,
+          status: 'S',
+          service: 'DR Visit'
+          patientId: patients[2].id
+        }], cb);
+      });
   }
 }

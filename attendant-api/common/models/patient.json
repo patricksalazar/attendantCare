@@ -51,6 +51,11 @@
       "type": "hasMany",
       "model": "CarePlan",
       "foreignKey": ""
+    },
+    "schedules": {
+      "type": "hasMany",
+      "model": "Schedule",
+      "foreignKey": ""
     }
   },
   "acls": [],

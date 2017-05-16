@@ -40,6 +40,12 @@
       "type": "belongsTo",
       "model": "Patient",
       "foreignKey": ""
+    },
+    "schedules": {
+      "type": "hasMany",
+      "model": "Schedule",
+      "foreignKey": "",
+      "through": "ScheduleParticipant"
     }
   },
   "acls": [],
