@@ -1,8 +1,10 @@
-<ion-content no-padding>
-  <ion-list *ngIf="!isLoaded; else displayPatient">
+<ion-content no-padding  *ngIf="!isLoaded; else displayPatient">
+  <ion-list>
     <ion-list-header>Loading patient...</ion-list-header>
   </ion-list>
-  <ng-template #displayPatient>
+</ion-content>
+<ng-template #displayPatient>
+  <ion-content no-padding>
     <form [formGroup]="patientForm">
       <ion-list>
         <ion-item>
@@ -45,74 +47,85 @@
           <ion-input type="text" formControlName="memberId"></ion-input>
         </ion-item>
         <error-messages [control]="patientForm.controls.memberId"></error-messages>
-        <ion-item>
-          <ion-label color="primary" fixed>Type</ion-label>
-        </ion-item>
       </ion-list>
-      <ion-list formArrayName="phones">
-        <ion-list-header color="primary">
-          Phones
-          <button ion-button icon-only item-right clear><ion-icon name="add" color="secondary"></ion-icon></button>
-        </ion-list-header>
-        <div *ngFor="let phone of patientForm.controls.phones.controls; let i = index">
-          <ion-item [formGroupName]="i">
-            <ion-input type="text"  formControlName="type" placeholder="Name" readonly></ion-input>
-            <ion-input type="tel" formControlName="number" placeholder="Number" readonly></ion-input>
-            <button ion-button icon-only item-right clear>
-              <ion-icon name="call" color="secondary"></ion-icon>
-            </button>
-          </ion-item>
-        </div>
-      </ion-list>
-      <ion-list formArrayName="personalContacts">
-        <ion-list-header color="primary">
-          Personal Contacts
-          <button ion-button icon-only item-right clear><ion-icon name="add" color="secondary"></ion-icon></button>
-        </ion-list-header>
-        <div *ngFor="let contact of patientForm.controls.personalContacts.controls; let i = index">
-          <ion-item [formGroupName]="i">
-            <ion-input type="text"  formControlName="firstName" placeholder="Name" readonly></ion-input>
-            <ion-input type="tel" formControlName="specialty" placeholder="Relation" readonly></ion-input>
-            <button ion-button icon-only item-right clear>
-              <ion-icon name="call" color="secondary"></ion-icon>
-            </button>
-          </ion-item>
-        </div>
-      </ion-list>
-      <ion-list formArrayName="physicians">
-        <ion-list-header color="primary">
-          Physicians
-          <button ion-button icon-only item-right clear><ion-icon name="add" color="secondary"></ion-icon></button>
-        </ion-list-header>
-        <div *ngFor="let physician of patientForm.controls.physicians.controls; let i = index">
-          <ion-item [formGroupName]="i">
-            <ion-input type="text"  formControlName="firstName" placeholder="Name" readonly></ion-input>
-            <ion-input type="tel" formControlName="specialty" placeholder="Specialty" readonly></ion-input>
-            <button ion-button icon-only item-right clear>
-              <ion-icon name="call" color="secondary"></ion-icon>
-            </button>
-          </ion-item>
-        </div>
-      </ion-list>
-      <ion-list formArrayName="otherContacts">
-        <ion-list-header color="primary">
-          Other Contacts
-          <button ion-button icon-only item-right clear><ion-icon name="add" color="secondary"></ion-icon></button>
-        </ion-list-header>
-        <div *ngFor="let contact of patientForm.controls.otherContacts.controls; let i = index">
-          <ion-item [formGroupName]="i">
-            <ion-input type="text"  formControlName="firstName" placeholder="Name" readonly></ion-input>
-            <ion-input type="tel" formControlName="type" placeholder="Title" readonly></ion-input>
-            <button ion-button icon-only item-right clear>
-              <ion-icon name="call" color="secondary"></ion-icon>
-            </button>
-          </ion-item>
-        </div>
-      </ion-list>
-      <button ion-button round color="primary" [disabled]="!patientForm.valid" (click)="save()">Save Patient</button>
-      <p>
-        {{ patientForm.errors }}
-      </p>
     </form>
-  </ng-template>
-</ion-content>
+    <ion-list>
+      <ion-list-header color="primary">
+        Phones
+        <button ion-button icon-only item-right clear (click)="createPhone()">
+          <ion-icon name="add" color="secondary"></ion-icon>
+        </button>
+      </ion-list-header>
+      <div *ngFor="let phone of phones">
+        <ion-item>
+          <ion-input type="text" [(ngModel)]="phone.type" placeholder="Name" readonly></ion-input>
+          <ion-input type="tel" [(ngModel)]="phone.number" placeholder="Number" readonly></ion-input>
+          <button ion-button icon-only item-right clear>
+            <ion-icon name="call" color="secondary"></ion-icon>
+          </button>
+        </ion-item>
+      </div>
+    </ion-list>
+    <ion-list>
+      <ion-list-header color="primary">
+        Personal Contacts
+        <button ion-button icon-only item-right clear
+          (click)="createContact('personal')">
+          <ion-icon name="add" color="secondary"></ion-icon>
+        </button>
+      </ion-list-header>
+      <div *ngFor="let contact of personalContacts">
+        <ion-item>
+          <ion-input type="text"  [(ngModel)]="contact.firstName" placeholder="Name" readonly></ion-input>
+          <ion-input type="tel" [(ngModel)]="contact.title" placeholder="Relation" readonly></ion-input>
+          <button ion-button icon-only item-right clear>
+            <ion-icon name="call" color="secondary"></ion-icon>
+          </button>
+        </ion-item>
+      </div>
+    </ion-list>
+    <ion-list>
+      <ion-list-header color="primary">
+        Physicians
+        <button ion-button icon-only item-right clear
+          (click)="createContact('physician')">
+          <ion-icon name="add" color="secondary"></ion-icon>
+        </button>
+      </ion-list-header>
+      <div *ngFor="let physician of physicians">
+        <ion-item>
+          <ion-input type="text"  [(ngModel)]="physician.firstName" placeholder="Name" readonly></ion-input>
+          <ion-input type="tel" [(ngModel)]="physician.title" placeholder="Specialty" readonly></ion-input>
+          <button ion-button icon-only item-right clear>
+            <ion-icon name="call" color="secondary"></ion-icon>
+          </button>
+        </ion-item>
+      </div>
+    </ion-list>
+    <ion-list>
+      <ion-list-header color="primary">
+        Other Contacts
+        <button ion-button icon-only item-right clear
+          (click)="createContact('other')">
+          <ion-icon name="add" color="secondary"></ion-icon>
+        </button>
+      </ion-list-header>
+      <div *ngFor="let contact of otherContacts">
+        <ion-item>
+          <ion-input type="text"  [(ngModel)]="contact.firstName" placeholder="Name" readonly></ion-input>
+          <ion-input type="tel" [(ngModel)]="contact.title" placeholder="Title" readonly></ion-input>
+          <button ion-button icon-only item-right clear>
+            <ion-icon name="call" color="secondary"></ion-icon>
+          </button>
+        </ion-item>
+      </div>
+    </ion-list>
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar>
+      <button ion-button round color="primary" [disabled]="!patientForm.valid" (click)="save()">Save</button>
+      <button ion-button round color="primary" (click)="cancel()">Cancel</button>
+      <button ion-button round color="danger" (click)="delete()" *ngIf="patientForm.controls.id.value">Delete</button>
+    </ion-toolbar>
+  </ion-footer>
+</ng-template>

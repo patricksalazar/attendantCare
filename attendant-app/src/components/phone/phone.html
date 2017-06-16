@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Phone</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list [formGroup]="phoneForm">
+    <ion-item>
+      <ion-label color="primary" fixed>Type</ion-label>
+      <ion-select formControlName="type" [class.invalid]="!phoneForm.controls.type.valid &amp;&amp; (phoneForm.controls.type.dirty)">
+        <ion-option value="work">Work</ion-option>
+        <ion-option value="mobile">Mobile</ion-option>
+        <ion-option value="home">Home</ion-option>
+        <ion-option value="fax">Fax</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="!phoneForm.controls.type.valid  &amp;&amp; (phoneForm.controls.type.dirty)">
+        <p class="error-message">***Please select a valid type.***</p>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" fixed>Number</ion-label>
+      <ion-input type="tel" formControlName="number" placeholder="(555) 555-5555"
+        [textMask]="{mask: masks.phoneNumber}"
+        [class.invalid]="!phoneForm.controls.number.valid &amp;&amp; (phoneForm.controls.number.dirty)"
+      ></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!phoneForm.controls.number.valid  &amp;&amp; (phoneForm.controls.number.dirty)">
+        <p class="error-message">***Please enter a valid number.***</p>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" fixed>Extension</ion-label>
+      <ion-input type="tel" formControlName="extension" [class.invalid]="!phoneForm.controls.extension.valid &amp;&amp; (phoneForm.controls.extension.dirty)"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!phoneForm.controls.extension.valid  &amp;&amp; (phoneForm.controls.extension.dirty)">
+        <p class="error-message">***Please enter a valid extension.***</p>
+    </ion-item>
+  </ion-list>
+  <ion-toolbar>
+    <button ion-button round color="primary" [disabled]="!phoneForm.valid" (click)="save()">Save</button>
+    <button ion-button round color="primary" (click)="cancel()">Cancel</button>
+  </ion-toolbar>
+</ion-content>

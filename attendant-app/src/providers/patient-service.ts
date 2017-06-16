@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 // import { lbServices } from './lb-services';
-import { IPatient, ICarePlan } from '../models/models';
+import { IPatient, ICarePlan, IPhone, IContact } from '../models/models';
 
 /*
   Generated class for the PatientService provider.
@@ -87,9 +87,17 @@ export class PatientService {
   create(patient: IPatient) {
     console.debug("PatientService.create");
     return this.http.post(`${this.baseUrl}/patients/`, patient)
-      .map(response => {
-        console.log("Create success response="+JSON.stringify(response));
-        return response;
+      .map(res => res.json())
+      .flatMap((p:IPatient) => {
+        console.log("Create success response="+JSON.stringify(p));
+        let patientId = p.id;
+        console.log("patientId:" + patientId);
+        let phoneApi = this.createPhone(patientId, patient.phones);
+        let contactApi = this.createContact(patientId, patient.contacts);
+        return Observable.forkJoin(phoneApi, contactApi).map(res => {
+          console.log("Create success response child="+JSON.stringify(res));
+          return res;
+        });
       })
       .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
@@ -99,9 +107,38 @@ export class PatientService {
     return this.http.put(`${this.baseUrl}/patients/${patientId}`, patient)
       .map(response => {
         console.log("Create success response="+JSON.stringify(response));
+        return response.json();
+      })
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  delete(patientId: string) {
+    console.debug("PatientService.delete");
+    return this.http.delete(`${this.baseUrl}/patients/${patientId}`)
+      .map(response => {
+        console.log("Create success response="+JSON.stringify(response));
         return response;
       })
       .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  createPhone(patientId: string, phones: IPhone[]) {
+    console.debug("PatientService.createPhone");
+    return this.http.post(`${this.baseUrl}/patients/${patientId}/phones`, phones)
+      .map(response => {
+        console.log("Create success response="+JSON.stringify(response));
+        return response;
+      })
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  createContact(patientId: string, contacts: IContact[]) {
+    console.debug("PatientService.createContact");
+    return this.http.post(`${this.baseUrl}/patients/${patientId}/contacts`, contacts)
+      .map(response => {
+        console.log("Create success response="+JSON.stringify(response));
+        return response;
+      })
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
 }

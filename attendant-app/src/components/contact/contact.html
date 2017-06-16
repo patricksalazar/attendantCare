@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Contact</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list [formGroup]="contactForm">
+    <ion-item>
+      <ion-label color="primary" fixed>Type</ion-label>
+      <ion-select formControlName="type" [class.invalid]="!contactForm.controls.type.valid &amp;&amp; (contactForm.controls.type.dirty)">
+        <ion-option value="personal">Personal</ion-option>
+        <ion-option value="physician">Physician</ion-option>
+        <ion-option value="professional">Professional</ion-option>
+        <ion-option value="other">Other</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" fixed>First Name</ion-label>
+      <ion-input type="text" formControlName="firstName" [class.invalid]="!contactForm.controls.firstName.valid &amp;&amp; (contactForm.controls.firstName.dirty)"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!contactForm.controls.firstName.valid  &amp;&amp; (contactForm.controls.firstName.dirty)">
+        <p class="error-message">***Please enter a valid name.***</p>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" fixed>Last Name</ion-label>
+      <ion-input type="text" formControlName="lastName" [class.invalid]="!contactForm.controls.lastName.valid &amp;&amp; (contactForm.controls.lastName.dirty)"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!contactForm.controls.lastName.valid  &amp;&amp; (contactForm.controls.lastName.dirty)">
+        <p class="error-message">***Please enter a valid name.***</p>
+    </ion-item>
+    <ion-item *ngIf="contactForm.controls.type.value !== 'personal'">
+      <ion-label color="primary" fixed>Company</ion-label>
+      <ion-input type="text" formControlName="company" [class.invalid]="!contactForm.controls.company.valid &amp;&amp; (contactForm.controls.company.dirty)"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!contactForm.controls.company.valid  &amp;&amp; (contactForm.controls.company.dirty)">
+        <p class="error-message">***Please enter a valid company.***</p>
+    </ion-item>
+    <ion-item *ngIf="contactForm.controls.type.value === 'personal'">
+      <ion-label color="primary" fixed>Relation</ion-label>
+      <ion-select type="text" formControlName="title" [class.invalid]="!contactForm.controls.title.valid &amp;&amp; (contactForm.controls.title.dirty)">
+        <ion-option value="aunt">Aunt</ion-option>
+        <ion-option value="cousin">Cousin</ion-option>
+        <ion-option value="daughter">Daughter</ion-option>
+        <ion-option value="father">Father</ion-option>
+        <ion-option value="friend">Friend</ion-option>
+        <ion-option value="mother">Mother</ion-option>
+        <ion-option value="neighbor">Neighbor</ion-option>
+        <ion-option value="son">Son</ion-option>
+        <ion-option value="spouse">Spouse</ion-option>
+        <ion-option value="uncle">Uncle</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="contactForm.controls.type.value === 'physician'">
+      <ion-label color="primary" fixed>Specialty</ion-label>
+      <ion-select type="text" formControlName="title" [class.invalid]="!contactForm.controls.title.valid &amp;&amp; (contactForm.controls.title.dirty)">
+        <ion-option value="01">General Practice</ion-option>
+        <ion-option value="02">General Surgery</ion-option>
+        <ion-option value="06">Cardiologist</ion-option>
+        <ion-option value="13">Neurology</ion-option>
+        <ion-option value="25">PM &amp; R</ion-option>
+        <ion-option value="34">Urology</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="contactForm.controls.type.value === 'professional'">
+      <ion-label color="primary" fixed>Title</ion-label>
+      <ion-select type="text" formControlName="title" [class.invalid]="!contactForm.controls.title.valid &amp;&amp; (contactForm.controls.title.dirty)">
+        <ion-option value="cm">Case Manager</ion-option>
+        <ion-option value="adj">Insurance Adjuster</ion-option>
+        <ion-option value="atty">Attorney</ion-option>
+        <ion-option value="sn">Nurse</ion-option>
+        <ion-option value="th">Therapy</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="!contactForm.controls.title.valid  &amp;&amp; (contactForm.controls.title.dirty)">
+        <p class="error-message">***Required***</p>
+    </ion-item>
+    <ion-item *ngIf="npi == 'physician'">
+      <ion-label color="primary" fixed>NPI</ion-label>
+      <ion-input type="text" formControlName="npi" [class.invalid]="!contactForm.controls.npi.valid &amp;&amp; (contactForm.controls.npi.dirty)"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!contactForm.controls.npi.valid  &amp;&amp; (contactForm.controls.npi.dirty)">
+        <p class="error-message">***Please enter a valid NPI.***</p>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" fixed>Phone</ion-label>
+      <ion-input type="tel" formControlName="phone" placeholder="(555) 555-5555"
+        [textMask]="{mask: masks.phoneNumber}"
+        [class.invalid]="!contactForm.controls.phone.valid &amp;&amp; contactForm.controls.phone.dirty"
+      ></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!contactForm.controls.phone.valid  &amp;&amp; (contactForm.controls.phone.dirty)">
+        <p class="error-message">***Please enter a valid phone.***</p>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" fixed>Email</ion-label>
+      <ion-input type="text" formControlName="email" [class.invalid]="!contactForm.controls.email.valid &amp;&amp; contactForm.controls.email.dirty"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="!contactForm.controls.email.valid  &amp;&amp; (contactForm.controls.email.dirty)">
+        <p class="error-message">***Please enter a valid email.***</p>
+    </ion-item>
+    <ion-item>
+      <ion-toggle formControlName="isEmergencyContact" [class.invalid]="!contactForm.controls.isEmergencyContact.valid &amp;&amp; contactForm.controls.isEmergencyContact.dirty"></ion-toggle>
+      <ion-label color="primary">Emergency Contact</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-toolbar>
+    <button ion-button round color="primary" [disabled]="!contactForm.valid" (click)="save()">Save</button>
+    <button ion-button round color="primary" (click)="cancel()">Cancel</button>
+  </ion-toolbar>
+</ion-content>

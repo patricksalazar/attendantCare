@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, Events, ModalController } from 'ionic-angular';
 
 import { IPatient, Patient, IPhone, IContact } from '../../models/models';
 import { PatientService } from '../../providers/patient-service';
 import { DateValidator } from '../../validators/date';
 import { ValidationService } from '../../providers/validation-service';
+import { PhoneComponent } from '../../components/phone/phone.component';
+import { ContactComponent } from '../../components/contact/contact.component';
 
 /**
  * Generated class for the Patient Details page.
@@ -22,9 +24,21 @@ export class PatientDetailsPage {
   patientId: string;
   isLoaded: boolean;
   patientForm: FormGroup;
+  phones: IPhone[];
+  personalContacts: IContact[];
+  physicians: IContact[];
+  otherContacts: IContact[];
 
   // TODO add phone number masks
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public formBuilder: FormBuilder, private patientService: PatientService) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public events: Events,
+    public modalCtrl: ModalController,
+    public toastCtrl: ToastController,
+    public formBuilder: FormBuilder,
+    private patientService: PatientService
+  ) {
     this.isLoaded = false;
     this.patientId = navParams.get('patientId');
 
@@ -40,14 +54,14 @@ export class PatientDetailsPage {
     }
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PatientDetailsPage');
-  }
-
   initPatientForm(patient: IPatient) {
-    let phones = this.initPhones(patient.phones);
+    this.phones = patient.phones;
     let contacts = this.initContacts(patient.contacts);
+    this.personalContacts = contacts.personalContacts;
+    this.physicians = contacts.physicians;
+    this.otherContacts = contacts.otherContacts;
     return this.formBuilder.group({
+      id: [patient.id],
       firstName: [patient.firstName, Validators.compose([Validators.required, Validators.maxLength(50), Validators.pattern('[a-zA-Z ]*')])],
       lastName: [patient.lastName, Validators.compose([Validators.required, Validators.maxLength(50), Validators.pattern('[a-zA-Z ]*')])],
       email: [patient.email, ValidationService.emailValidator],
@@ -56,64 +70,47 @@ export class PatientDetailsPage {
       birthDate: [patient.birthDate, DateValidator.previousDate],
       groupId: [patient.groupId],
       memberId: [patient.memberId],
-      phones: phones,
-      personalContacts: contacts.personalControl,
-      physicians: contacts.personalControl,
-      otherContacts: this.formBuilder.array([])
     });
-  }
-
-  initPhones(phones: IPhone[]) {
-    const phoneControl = this.formBuilder.array([]);
-    if (phones) {
-      for (let phone of phones) {
-        phoneControl.push(this.formBuilder.group({
-          id: [phone.id],
-          patientId: [phone.patientId],
-          type: [phone.type, Validators.required], // TODO check type dropdown
-          number: [phone.number, Validators.required] //, Validators.pattern('[^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$]'
-        }));
-      }
-    }
-    return phoneControl;
   }
 
   initContact(contact: IContact) {
-    return this.formBuilder.group({
-      id: [contact.id],
-      patientId: [contact.patientId],
-      firstName: [contact.firstName, Validators.compose([Validators.required, Validators.maxLength(50), Validators.pattern('[a-zA-Z ]*')])],
-      lastName: [contact.lastName, Validators.compose([Validators.maxLength(50), Validators.pattern('[a-zA-Z ]*')])],
-      type: [contact.type, Validators.compose([Validators.required])],
-      specialty: [contact.specialty],
-      phone: [contact.phone],
-      email: [contact.email],
-      isEmergencyContact: [contact.isEmergencyContact]
-    });
+    return {
+      id: contact.id,
+      patientId: contact.patientId,
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      company: contact.company,
+      type: contact.type,
+      title: contact.title,
+      phone: contact.phone,
+      email: contact.email,
+      isEmergencyContact: contact.isEmergencyContact,
+      isPowerOfAttorney: contact.isPowerOfAttorney
+    };
   }
 
   initContacts(contacts: IContact[]) {
-    const personalControl = this.formBuilder.array([]);
-    const physicianControl = this.formBuilder.array([]);
-    const otherControl = this.formBuilder.array([]);
-
+    let personalContacts = [];
+    let physicians = [];
+    let otherContacts = [];
     if (contacts) {
       for (let contact of contacts) {
         // if (!contact.isEmergencyContact) contact.isEmergencyContact = false;
         // if (!contact.specialty) contact.specialty = "";
         if (contact.type === 'personal') {
-          personalControl.push(this.initContact(contact));
+          personalContacts.push(contact);
         }else if (contact.type === 'physician') {
-          physicianControl.push(this.initContact(contact));
+          physicians.push(contact);
         }else {
-          otherControl.push(this.initContact(contact));
+          otherContacts.push(contact);
         }
       }
     }
-    return { personalControl, physicianControl, otherControl };
+    return { personalContacts, physicians, otherContacts };
   }
 
   save() {
+    // Invalid form
     if (!this.patientForm.valid) {
       console.error("Error: " + JSON.stringify(this.patientForm.errors));
       let keys = Object.keys(this.patientForm.controls);
@@ -124,26 +121,33 @@ export class PatientDetailsPage {
         }
       }
     }else {
+      // Update Patient
       if (this.patientId) {
         console.log("Update Patient!!");
         this.patientService.update(this.patientId, this.patientForm.value).subscribe(
           patient => {
             console.debug("Patient after: " + JSON.stringify(patient));
             this.patientId = patient.id;
-            let toast = this.toastCtrl.create({message: 'Patient updated successfully', duration: 5000});
-            toast.present();
+            this.toastCtrl.create({
+              message: 'Patient updated successfully', duration: 3000, position: "top", showCloseButton: true}
+            ).present();
+            this.events.publish("patient:save", {refresh: true});
           },
           err => {
             console.log(err);
           }
         );
+        // Create Patient
       }else {
-        console.log("Create Patient!!");
-        this.patientService.create(this.patientForm.value).subscribe(
+        let patient = this.patientForm.value;
+        patient.phones = this.phones;
+        patient.contacts = [...this.personalContacts, ...this.physicians, ...this.otherContacts];
+        console.log("Create Patient!!: " + JSON.stringify(patient) );
+        this.patientService.create(patient).subscribe(
           patient => {
             console.debug("Patient after: " + JSON.stringify(patient));
-            let toast = this.toastCtrl.create({message: 'Patient created successfully', duration: 5000});
-            toast.present();
+            this.toastCtrl.create({message: 'Patient created successfully', duration: 3000, position: "top", showCloseButton: true}).present();
+            this.events.publish("patient:save", {refresh: true});
           },
           err => {
             console.log(err);
@@ -153,4 +157,91 @@ export class PatientDetailsPage {
     }
   }
 
+  cancel() {
+    this.events.publish("patient:save", {refresh: false});
+  }
+
+  delete() {
+    console.log("Delete Patient!");
+    this.patientService.delete(this.patientId).subscribe(
+      patient => {
+        this.toastCtrl.create(
+          {message: 'Patient deleted successfully', duration: 3000, position: "top", showCloseButton: true}
+        ).present();
+        this.events.publish("patient:save", {refresh: true});
+      },
+      err => {
+        this.toastCtrl.create(
+          {message: 'Unable to delete patient: err=' + JSON.stringify(err), duration: 3000, position: "top", showCloseButton: true}
+        ).present();
+        console.log(err);
+      }
+    )
+  }
+
+  createPhone() {
+    console.log("createPhone");
+    let modal = this.modalCtrl.create(PhoneComponent, { patientId: this.patientId });
+    modal.onDidDismiss(phone => {
+      console.log("Phone 1: " + JSON.stringify(phone));
+      if (phone != null) {  // if saved
+        console.log("Phone modal: " + JSON.stringify(phone));
+        if (this.patientId) {
+          this.patientService.createPhone(this.patientId, phone).subscribe(
+            phone => {
+              this.toastCtrl.create(
+                {message: 'Phone created successfully', duration: 3000, position: "top", showCloseButton: true}
+              ).present();
+            },
+            err => {
+              this.toastCtrl.create(
+                {message: 'Unable to create phone', duration: 3000, position: "top", showCloseButton: true}
+              ).present();
+              console.error("Unable to create phone, error=" + JSON.stringify(err));
+            }
+          )
+        }
+        if (!this.phones) this.phones = [];
+        this.phones.push(phone);
+      }
+    });
+    modal.present();
+  } // end create phone
+
+  createContact(type: string) {
+    console.log("createContact: type=" + type);
+    let modal = this.modalCtrl.create(ContactComponent, { patientId: this.patientId, type: type });
+    modal.onDidDismiss(contact => {
+      if (contact != null) { // if saved
+        console.log("Contact modal: " + JSON.stringify(contact));
+        if (this.patientId) {
+          this.patientService.createContact(this.patientId, contact).subscribe(
+            phone => {
+              this.toastCtrl.create(
+                {message: 'Contact created successfully', duration: 3000, position: "top", showCloseButton: true}
+              ).present();
+            },
+            err => {
+              this.toastCtrl.create(
+                {message: 'Unable to create contact', duration: 3000, position: "top", showCloseButton: true}
+              ).present();
+              console.error("Unable to create contact, error=" + JSON.stringify(err));
+            }
+          )
+        }
+        switch (type) {
+          case 'personal':
+            this.personalContacts.push(contact);
+            break;
+          case 'physician':
+            this.physicians.push(contact);
+            break;
+          default:
+            this.otherContacts.push(contact);
+            break;
+        }
+      }
+    });
+    modal.present();
+  } // end create contact
 }

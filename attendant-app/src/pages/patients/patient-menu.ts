@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 /**
  * Generated class for the Patient Details page.
@@ -20,13 +20,23 @@ export class PatientMenu {
     patientId: ""
   }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events) {
     this.tabParams.patientId = navParams.get('patientId');
-    console.log("Tab params:" + this.tabParams.patientId);
+    events.subscribe('patient:save', (opts) => {
+      if (navCtrl.canGoBack()) {
+        navCtrl.pop();
+      }else {
+        navCtrl.setRoot("HomePage");
+      }
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Patient Details');
+  }
+
+  ionViewDidLeave() {
+    this.events.unsubscribe('patient:save');
   }
 
 }

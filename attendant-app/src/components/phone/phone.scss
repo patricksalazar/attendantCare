@@ -1,0 +1,22 @@
+page-phone {
+  ion-input {
+    padding-left: 10px;
+    color: color($colors, dark);
+  }
+
+  ion-label {
+    color: color($colors, shade);
+  }
+
+  ion-toolbar {
+    text-align: center;
+  }
+
+  .error-message {
+    color: color($colors, danger);
+  }
+
+  [floating] {
+    margin-left: 10px;
+  }
+}

@@ -22,7 +22,7 @@
       "required": true
     },
     "code": {
-      "type": "number",
+      "type": "string",
       "required": true
     },
     "description": {

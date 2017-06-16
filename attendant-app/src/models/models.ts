@@ -1,3 +1,26 @@
+// Dropdown
+export interface IDropdown {
+  id: string,
+  selector: string,
+  group: string,
+  groupSequence: number,
+  sequence: number,
+  code: string,
+  description: string,
+  enabled: boolean
+}
+
+export class Dropdown implements IDropdown {
+  id: string;
+  selector: string;
+  group: string;
+  groupSequence: number;
+  sequence: number;
+  code: string;
+  description: string;
+  enabled: boolean;
+}
+
 // Phone model
 export interface IPhone {
   id: string,
@@ -8,7 +31,7 @@ export interface IPhone {
   carrier: string
 }
 
-class Phone implements IPhone {
+export class Phone implements IPhone {
   id: string;
   patientId: string;
   number: number;
@@ -24,22 +47,28 @@ export interface IContact {
   firstName: string,
   lastName: string,
   type: string,
-  specialty: string,
+  company: string,
+  title: string,
+  npi: string,
   phone: number,
   email: string,
-  isEmergencyContact: boolean
+  isEmergencyContact: boolean,
+  isPowerOfAttorney: boolean
 }
 
-class Contact implements IContact {
+export class Contact implements IContact {
   id: string;
   patientId: string;
   firstName: string;
   lastName: string;
   type: string;
-  specialty: string;
+  company: string;
+  title: string;
+  npi: string;
   phone: number;
   email: string;
   isEmergencyContact: boolean;
+  isPowerOfAttorney: boolean;
 }
 
 // Patient model
@@ -83,16 +112,36 @@ export class Patient implements IPatient {
 
 // CarePlan Groups for care plan model
 export interface ICarePlanGroup {
+  id: string,
+  code: string,
   name: string,
   sequence: number,
+  tasks: [ICarePlanTask]
+}
+
+export class CarePlanGroup implements ICarePlanGroup {
+  id: string;
+  code: string;
+  name: string;
+  sequence: number;
+  tasks: [ICarePlanTask];
 }
 
 // CarePlan Tasks for care plan model
 export interface ICarePlanTask {
+  id: string,
   sequence: number,
   key: number,
   description: string,
   enabled: boolean
+}
+
+export class CarePlanTask implements ICarePlanTask {
+  id: string;
+  sequence: number;
+  key: number;
+  description: string;
+  enabled: boolean;
 }
 
 // CarePlan model
@@ -106,10 +155,11 @@ export interface ICarePlan {
   createDate: Date,
   updatedBy: string,
   updateDate: Date,
-  tasks: [ICarePlanTask]
+  patientId: string,
+  groups: [ICarePlanGroup]
 }
 
-class CarePlan implements ICarePlan {
+export class CarePlan implements ICarePlan {
   id: string;
   name: string;
   startDate: Date;
@@ -119,5 +169,6 @@ class CarePlan implements ICarePlan {
   createDate: Date;
   updatedBy: string;
   updateDate: Date;
-  tasks: [ICarePlanTask];
+  patientId: string;
+  groups: [ICarePlanGroup];
 }

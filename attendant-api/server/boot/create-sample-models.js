@@ -12,17 +12,17 @@ module.exports = function(app) {
     console.log("created patients and companies");
     async.parallel({
       contacts: async.apply(createContacts, results.patients),
-      schedule: async.apply(createSchedules, results.patients),
+      schedules: async.apply(createSchedules, results.patients),
       phones: async.apply(createPhones, results.patients),
       careplan: async.apply(createCarePlan, results.patients)
     }, function(err, results) {
       if (err) throw err;
       async.parallel({
         groups: async.apply(createCarePlanGroups, results.careplan),
-        participants: async.apply(createScheduleParticipants, results.contacts),
+        participants: async.apply(createScheduleParticipants, results.schedules, results.contacts),
       }, function (err, results) {
         if (err) throw err;
-          createCarePlanTasks(results, function(err) {
+          createCarePlanTasks(results.groups, function(err) {
             console.log('> models created successfully.');
         });
       });
@@ -125,7 +125,7 @@ module.exports = function(app) {
         firstName: 'Jane',
         lastName: 'Doe',
         type: 'personal',
-        specialty: 'spouse',
+        title: 'spouse',
         phone: '2483520400',
         email: 'janedoe@yahoo.com',
         isEmergencyContact: true,
@@ -134,7 +134,7 @@ module.exports = function(app) {
         firstName: 'Paul',
         lastName: 'Patient',
         type: 'personal',
-        specialty: 'spouse',
+        title: 'spouse',
         phone: '2483520400',
         email: 'ppatient@gmail.com',
         patientId: patients[1].id
@@ -142,7 +142,7 @@ module.exports = function(app) {
         firstName: 'Francine',
         lastName: 'Frank',
         type: 'personal',
-        specialty: 'spouse',
+        title: 'spouse',
         phone: '2483520400',
         email: 'ffrank@test.com',
         isEmergencyContact: true,
@@ -151,7 +151,7 @@ module.exports = function(app) {
         firstName: 'Patrick',
         lastName: 'Primary',
         type: 'physician',
-        specialty: 'PCP',
+        title: 'PCP',
         phone: '2483520400',
         email: 'pprimary@hospital.com',
         patientId: patients[0].id
@@ -159,7 +159,7 @@ module.exports = function(app) {
         firstName: 'Ronald',
         lastName: 'Rehab',
         type: 'physician',
-        specialty: 'PM&R',
+        title: 'PM&R',
         phone: '2483520400',
         email: 'rrehab@hospital.com',
         patientId: patients[0].id
@@ -167,7 +167,7 @@ module.exports = function(app) {
         firstName: 'Charles',
         lastName: 'Care',
         type: 'physician',
-        specialty: 'PCP',
+        title: 'PCP',
         phone: '2483520400',
         email: 'ccare@yahoo.com',
         patientId: patients[1].id
@@ -175,7 +175,7 @@ module.exports = function(app) {
         firstName: 'Phyllis',
         lastName: 'Physician',
         type: 'physician',
-        specialty: 'PCP',
+        title: 'PCP',
         phone: '2483520400',
         email: 'pphysician@hospital.com',
         patientId: patients[2].id
@@ -183,7 +183,7 @@ module.exports = function(app) {
         firstName: 'Carol',
         lastName: 'Cardio',
         type: 'physician',
-        specialty: 'Cardio',
+        title: 'Cardio',
         phone: '2483520400',
         email: 'ccardio@gmail.com',
         patientId: patients[2].id
@@ -191,6 +191,7 @@ module.exports = function(app) {
         firstName: 'Alex',
         lastName: 'Auto',
         type: 'adjustor',
+        title: 'adjustor',
         phone: '2483520400',
         email: 'aauto@insurance.com',
         patientId: patients[0].id
@@ -198,6 +199,7 @@ module.exports = function(app) {
         firstName: 'Amy',
         lastName: 'Auto',
         type: 'adjustor',
+        title: 'adjustor',
         phone: '2483520400',
         email: 'amyauto@insurance.com',
         patientId: patients[1].id
@@ -205,6 +207,7 @@ module.exports = function(app) {
         firstName: 'Andrew',
         lastName: 'Adjustor',
         type: 'adjustor',
+        title: 'adjustor',
         phone: '2483520400',
         email: 'adjustor@insurance.com',
         patientId: patients[2].id
@@ -212,13 +215,15 @@ module.exports = function(app) {
         firstName: 'Carol',
         lastName: 'Case',
         type: 'casemanager',
+        title: 'casemanager',
         phone: '2483520400',
         email: 'ccase@casemgmt.com',
         patientId: patients[0].id
       }, {
-        firstName: 'Carol',
-        lastName: 'Case',
+        firstName: 'Marge',
+        lastName: 'Management',
         type: 'casemanager',
+        title: 'casemanager',
         phone: '2483520400',
         email: 'ccase@casemgmt.com',
         patientId: patients[1].id
@@ -226,9 +231,34 @@ module.exports = function(app) {
         firstName: 'Chelsea',
         lastName: 'Chelsea',
         type: 'casemanager',
+        title: 'casemanager',
         phone: '2483520400',
         email: 'chelsea@gmail.com',
         patientId: patients[2].id
+      }, {
+        firstName: 'Abby',
+        lastName: 'Aide',
+        type: 'HHA',
+        title: 'HHA',
+        phone: '2485551212',
+        email: 'abc@gmail.com',
+        patientId: patients[0].id
+      }, {
+        firstName: 'Nancy',
+        lastName: 'Nurse',
+        type: 'SN',
+        title: 'SN',
+        phone: '3135551212',
+        email: 'nurse@gmail.com',
+        patientId: patients[0].id
+      }, {
+        firstName: 'Peter',
+        lastName: 'Therapy',
+        type: 'PT',
+        title: 'PT',
+        phone: '5865551212',
+        email: 'nurse@gmail.com',
+        patientId: patients[0].id
       }], cb);
     });
   }
@@ -296,50 +326,62 @@ module.exports = function(app) {
       if (err) return cb(err);
       let CarePlanGroup = app.models.CarePlanGroup;
       CarePlanGroup.create([{
+        code: 'Bathing',
         name: 'Bathing',
         sequence: 1,
         carePlanId: careplan[0].id
       }, {
-        name: 'Dressing - Upper',
+        code: 'DressLower',
+        name: 'Dressing - Lower',
         sequence: 2,
         carePlanId: careplan[0].id
       }, {
-        name: 'Dressing - Lower',
+        code: 'DressUpper',
+        name: 'Dressing - Upper',
         sequence: 3,
         carePlanId: careplan[0].id
       }, {
+        code: 'Ambulation',
         name: 'Ambulation',
         sequence: 4,
         carePlanId: careplan[0].id
       }, {
+        code: 'Bathing',
         name: 'Bathing',
         sequence: 1,
         carePlanId: careplan[1].id
       }, {
+        code: 'DressUpper',
         name: 'Dressing - Upper',
         sequence: 2,
         carePlanId: careplan[1].id
       }, {
+        code: 'DressLower',
         name: 'Dressing - Lower',
         sequence: 3,
         carePlanId: careplan[1].id
       }, {
+        code: 'Ambulation',
         name: 'Ambulation',
         sequence: 4,
         carePlanId: careplan[1].id
       }, {
+        code: 'Bathing',
         name: 'Bathing',
         sequence: 1,
         carePlanId: careplan[2].id
       }, {
+        code: 'DressUpper',
         name: 'Dressing - Upper',
         sequence: 2,
         carePlanId: careplan[2].id
       }, {
+        code: 'DressLower',
         name: 'Dressing - Lower',
         sequence: 3,
         carePlanId: careplan[2].id
       }, {
+        code: 'Ambulation',
         name: 'Ambulation',
         sequence: 4,
         carePlanId: careplan[2].id
@@ -561,7 +603,7 @@ module.exports = function(app) {
         let today = new Date();
         today.setMinutes(0);today.setSeconds(0);
 
-        let day1Start = new Date();
+        let date1Start = new Date();
         date1Start.setTime(today.getTime());
         date1Start.setHours(8);
         let date1End = new Date();
@@ -573,7 +615,7 @@ module.exports = function(app) {
         let date2End = new Date();
         date2End.setTime(today.getTime());
         date2End.setHours(12);
-        let day3Start = new Date();
+        let date3Start = new Date();
         date3Start.setTime(today.getTime());
         date3Start.setHours(8);
         let date3End = new Date();
@@ -592,28 +634,28 @@ module.exports = function(app) {
           endDate: date1End,
           status: 'S',
           service: 'HHA Hourly',
-          message: 'Test'
+          message: 'Test',
           patientId: patients[0].id
         }, {
           type: 'physician',
           startDate: date2Start,
           endDate: date2End,
           status: 'S',
-          service: 'DR Visit'
+          service: 'DR Visit',
           patientId: patients[0].id
         }, {
           type: 'homecare',
           startDate: date3Start,
           endDate: date3End,
           status: 'S',
-          service: 'HHA Hourly'
+          service: 'HHA Hourly',
           patientId: patients[0].id
         }, {
           type: 'therapy',
           startDate: date4Start,
           endDate: date4End,
           status: 'S',
-          service: 'PT Visit'
+          service: 'PT Visit',
           patientId: patients[0].id
         }, {
           type: 'homecare',
@@ -621,28 +663,28 @@ module.exports = function(app) {
           endDate: date1End,
           status: 'S',
           service: 'HHA Hourly',
-          message: 'Test'
+          message: 'Test',
           patientId: patients[1].id
         }, {
           type: 'physician',
           startDate: date2Start,
           endDate: date2End,
           status: 'S',
-          service: 'DR Visit'
+          service: 'DR Visit',
           patientId: patients[1].id
         }, {
           type: 'homecare',
           startDate: date3Start,
           endDate: date3End,
           status: 'S',
-          service: 'HHA Hourly'
+          service: 'HHA Hourly',
           patientId: patients[1].id
         }, {
           type: 'therapy',
           startDate: date4Start,
           endDate: date4End,
           status: 'S',
-          service: 'PT Visit'
+          service: 'PT Visit',
           patientId: patients[1].id
         }, {
           type: 'homecare',
@@ -650,29 +692,83 @@ module.exports = function(app) {
           endDate: date1End,
           status: 'S',
           service: 'HHA Hourly',
-          message: 'Test'
+          message: 'Test',
           patientId: patients[2].id
         }, {
           type: 'physician',
           startDate: date2Start,
           endDate: date2End,
           status: 'S',
-          service: 'PT Visit'
+          service: 'PT Visit',
           patientId: patients[2].id
         }, {
           type: 'homecare',
           startDate: date3Start,
           endDate: date3End,
           status: 'S',
-          service: 'HHA Hourly'
+          service: 'HHA Hourly',
           patientId: patients[2].id
         }, {
           type: 'therapy',
           startDate: date4Start,
           endDate: date4End,
           status: 'S',
-          service: 'DR Visit'
+          service: 'DR Visit',
           patientId: patients[2].id
+        }], cb);
+      });
+  }
+
+  function createScheduleParticipants(schedules, contacts, cb) {
+    attDS.automigrate('ScheduleParticipant', function(err) {
+        if (err) return cb(err);
+        let ScheduleParticipant = app.models.ScheduleParticipant;
+
+        ScheduleParticipant.create([{
+          scheduleId: schedules[0].id,
+          participantId: contacts[14].id
+        }, {
+          scheduleId: schedules[1].id,
+          participantId: contacts[5].id
+        }, {
+          scheduleId: schedules[1].id,
+          participantId: contacts[11].id
+        }, {
+          scheduleId: schedules[2].id,
+          participantId: contacts[14].id
+        }, {
+          scheduleId: schedules[3].id,
+          participantId: contacts[16].id
+        }, {
+          scheduleId: schedules[4].id,
+          participantId: contacts[14].id
+        }, {
+          scheduleId: schedules[5].id,
+          participantId: contacts[5].id
+        }, {
+          scheduleId: schedules[5].id,
+          participantId: contacts[12].id
+        }, {
+          scheduleId: schedules[6].id,
+          participantId: contacts[14].id
+        }, {
+          scheduleId: schedules[7].id,
+          participantId: contacts[16].id
+        }, {
+          scheduleId: schedules[8].id,
+          participantId: contacts[14].id
+        }, {
+          scheduleId: schedules[9].id,
+          participantId: contacts[7].id
+        }, {
+          scheduleId: schedules[9].id,
+          participantId: contacts[13].id
+        }, {
+          scheduleId: schedules[10].id,
+          participantId: contacts[14].id
+        }, {
+          scheduleId: schedules[11].id,
+          participantId: contacts[16].id
         }], cb);
       });
   }

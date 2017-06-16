@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 // import { lbServices } from './lb-services';
-import { ICarePlan } from '../models/models';
+import { ICarePlan, ICarePlanGroup, ICarePlanTask } from '../models/models';
 
 /*
   Generated class for the CarePlanService provider.
@@ -57,4 +57,23 @@ export class CarePlanService {
     }
   }
 
+  createGroups(careplanId: string, groups: ICarePlanGroup[]) {
+    console.debug("PatientService.createPhone");
+    return this.http.post(`${this.baseUrl}/careplans/${careplanId}/groups`, groups)
+      .map(response => {
+        console.log("Create success response="+JSON.stringify(response));
+        return response.json();
+      })
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  createTasks(groupId: string, tasks: ICarePlanTask[]) {
+    console.debug("PatientService.createPhone");
+    return this.http.post(`${this.baseUrl}/careplangroups/${groupId}/tasks`, tasks)
+      .map(response => {
+        console.log("Create success response="+JSON.stringify(response));
+        return response.json();
+      })
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
 }

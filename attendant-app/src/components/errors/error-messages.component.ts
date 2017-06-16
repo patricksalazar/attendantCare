@@ -4,17 +4,17 @@ import { ValidationService } from '../../providers/validation-service';
 
 @Component({
   selector: 'error-messages',
-  template: `<div *ngIf="errorMessage !== null">***{{errorMessage}}***</div>`
+  templateUrl: 'error-messages.html'
 })
 export class ErrorMessagesComponent {
   @Input() control: FormControl;
 
   constructor() {}
 
-  get errorMessage() {
+  get errorMessages() {
     for (let propertyName in this.control.errors) {
-      // console.log("propertyName:"+propertyName);
-      // console.log("errors:"+JSON.stringify(this.control.errors));
+      // console.debug("propertyName:"+propertyName);
+      // console.debug("errors:"+JSON.stringify(this.control.errors));
       if (this.control.errors.hasOwnProperty(propertyName) && this.control.dirty) {
         return ValidationService.getValidationErrorMessage(propertyName, this.control.errors[propertyName]);
       }

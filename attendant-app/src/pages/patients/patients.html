@@ -14,7 +14,7 @@
 
 
 <ion-content padding>
-  <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
+  <ion-searchbar (ionInput)="search($event)" (ionCancel)="cancelSearch()"></ion-searchbar>
   <ion-list>
     <button type="button" ion-item *ngFor="let patient of patients" (click)="selectPatient(patient.id)">
       <h2>{{ patient.firstName }} {{ patient.lastName }}</h2>

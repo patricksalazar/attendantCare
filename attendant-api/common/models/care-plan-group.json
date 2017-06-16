@@ -1,11 +1,16 @@
 {
   "name": "CarePlanGroup",
+  "plural": "careplangroups",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
+    "code": {
+      "type": "string",
+      "required": true
+    },
     "name": {
       "type": "string",
       "required": true

@@ -18,7 +18,14 @@
       "type": "string",
       "required": true
     },
-    "specialty": {
+    "company": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "npi": {
       "type": "string"
     },
     "phone": {
